@@ -52,9 +52,11 @@ class Validator(object):
                 raise
             fields[field.replace('_', '-')] = {'type': attr_type}
 
+        required = [item.replace('_', '-') for item in self.Meta.required]
+
         schema = copy.deepcopy(_BASE_SCHEMA)
         schema['properties']['data'][
             'properties']['attributes']['properties'] = fields
         schema['properties']['data'][
-            'properties']['attributes']['required'] = self.Meta.required
+            'properties']['attributes']['required'] = required
         return schema

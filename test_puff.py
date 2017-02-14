@@ -108,7 +108,7 @@ class TestValidator(unittest.TestCase):
             class Meta:
                 validates = AnThing
                 fields = ['id', 'name', 'enabled', 'with_an_underscore']
-                required = []
+                required = ['with_an_underscore']
 
         expected = {
             'id': {'type': 'integer'},
@@ -120,5 +120,8 @@ class TestValidator(unittest.TestCase):
         validator = AnThingValidator2()
         attribs = validator.schema['properties']['data'][
             'properties']['attributes']['properties']
+        required = validator.schema['properties']['data'][
+            'properties']['attributes']['required']
 
         self.assertEqual(expected, attribs)
+        self.assertEqual(['with-an-underscore'], required)
