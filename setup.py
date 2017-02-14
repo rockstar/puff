@@ -10,6 +10,7 @@ setup(
     url="https://github.com/rockstar/puff",
     license="MIT",
     install_requires=['sqlalchemy'],
+    py_modules=('puff',),
     classifiers=[
         "Intended Audience :: Developers",
         "Programming Language :: Python",
