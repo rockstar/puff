@@ -50,7 +50,7 @@ class Validator(object):
                     type(self.Meta.validates.__table__.c[field].type)]
             except KeyError:
                 raise
-            fields[field] = {'type': attr_type}
+            fields[field.replace('_', '-')] = {'type': attr_type}
 
         schema = copy.deepcopy(_BASE_SCHEMA)
         schema['properties']['data'][

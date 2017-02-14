@@ -20,6 +20,8 @@ class AnThing(declarative_base()):
     name = Column(String(30), nullable=False)
     enabled = Column(Boolean, default=False)
 
+    with_an_underscore = Column(String(1))
+
 
 class AnThingValidator(puff.Validator):
     """A validator for AnThing."""
@@ -96,3 +98,27 @@ class TestValidator(unittest.TestCase):
             'properties']['attributes']['required']
 
         self.assertEqual(expected, sorted(required))
+
+    def test_underscore_to_hyphen(self):
+        """Underscores with attributes are converted to hyphens."""
+
+        class AnThingValidator2(puff.Validator):
+            """A validator for AnThing."""
+
+            class Meta:
+                validates = AnThing
+                fields = ['id', 'name', 'enabled', 'with_an_underscore']
+                required = []
+
+        expected = {
+            'id': {'type': 'integer'},
+            'name': {'type': 'string'},
+            'enabled': {'type': 'boolean'},
+            'with-an-underscore': {'type': 'string'},
+        }
+
+        validator = AnThingValidator2()
+        attribs = validator.schema['properties']['data'][
+            'properties']['attributes']['properties']
+
+        self.assertEqual(expected, attribs)
