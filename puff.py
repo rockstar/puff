@@ -22,7 +22,6 @@ _BASE_SCHEMA = {
                 'attributes': {
                     'type': 'object',
                     'properties': None,
-                    'required': None,
                 },
             },
             'required': [
@@ -42,8 +41,9 @@ class Validator(object):
 
     @property
     def schema(self):
-        fields = {}
+        schema = copy.deepcopy(_BASE_SCHEMA)
 
+        fields = {}
         for field in self.Meta.fields:
             try:
                 attr_type = _TYPE_MAP[
@@ -51,12 +51,11 @@ class Validator(object):
             except KeyError:
                 raise
             fields[field.replace('_', '-')] = {'type': attr_type}
-
-        required = [item.replace('_', '-') for item in self.Meta.required]
-
-        schema = copy.deepcopy(_BASE_SCHEMA)
         schema['properties']['data'][
             'properties']['attributes']['properties'] = fields
-        schema['properties']['data'][
-            'properties']['attributes']['required'] = required
+
+        if len(self.Meta.required):
+            required = [item.replace('_', '-') for item in self.Meta.required]
+            schema['properties']['data'][
+                'properties']['attributes']['required'] = required
         return schema
