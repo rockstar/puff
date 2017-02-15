@@ -31,6 +31,9 @@ class AnThingValidator(puff.Validator):
         fields = ['id', 'name', 'enabled']
         required = ['name', 'enabled']
 
+        field_types = [
+        ]
+
 
 class TestValidator(unittest.TestCase):
     """Tests for puff.Validator.
@@ -125,3 +128,29 @@ class TestValidator(unittest.TestCase):
 
         self.assertEqual(expected, attribs)
         self.assertEqual(['with-an-underscore'], required)
+
+    def test_field_types(self):
+        """Field type will override the sqlalchemy column type."""
+
+        class AnThingValidator2(puff.Validator):
+            """A validator for AnThing."""
+
+            class Meta:
+                validates = AnThing
+                fields = ['id', 'name', 'enabled']
+
+                field_types = {
+                    'enabled': 'string',
+                }
+
+        expected = {
+            'id': {'type': 'integer'},
+            'name': {'type': 'string'},
+            'enabled': {'type': 'string'},
+        }
+
+        validator = AnThingValidator2()
+        attribs = validator.schema['properties']['data'][
+            'properties']['attributes']['properties']
+
+        self.assertEqual(expected, attribs)

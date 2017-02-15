@@ -46,15 +46,19 @@ class Validator(object):
         fields = {}
         for field in self.Meta.fields:
             try:
-                attr_type = _TYPE_MAP[
-                    type(self.Meta.validates.__table__.c[field].type)]
+                if (hasattr(self.Meta, 'field_types')
+                        and field in self.Meta.field_types):
+                    attr_type = self.Meta.field_types[field]
+                else:
+                    attr_type = _TYPE_MAP[
+                        type(self.Meta.validates.__table__.c[field].type)]
             except KeyError:
                 raise
             fields[field.replace('_', '-')] = {'type': attr_type}
         schema['properties']['data'][
             'properties']['attributes']['properties'] = fields
 
-        if len(self.Meta.required):
+        if hasattr(self.Meta, 'required') and len(self.Meta.required):
             required = [item.replace('_', '-') for item in self.Meta.required]
             schema['properties']['data'][
                 'properties']['attributes']['required'] = required
