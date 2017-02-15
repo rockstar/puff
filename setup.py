@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="puff",
-    version="0.4",
+    version="0.5",
     description="API Validation for SQLAlchemy-jsonapi",
     maintainer="Paul Hummer",
     maintainer_email="paul@eventuallyanyway.com",
