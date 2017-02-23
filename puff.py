@@ -19,6 +19,9 @@ _BASE_SCHEMA = {
                 'type': {
                     'type': 'string'
                 },
+                'id': {
+                    'type': 'string'
+                },
                 'attributes': {
                     'type': 'object',
                     'properties': None,
