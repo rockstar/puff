@@ -9,7 +9,7 @@ setup(
     maintainer_email="paul@eventuallyanyway.com",
     url="https://github.com/rockstar/puff",
     license="MIT",
-    install_requires=['sqlalchemy'],
+    install_requires=['sqlalchemy', 'jsonschema'],
     py_modules=('puff',),
     classifiers=[
         "Intended Audience :: Developers",
